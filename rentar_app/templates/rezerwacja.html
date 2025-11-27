@@ -3,6 +3,7 @@
 {% block title %}Rezerwacja - Rentar{% endblock %}
 
 {% block content %}
+
 <div style="max-width: 800px;margin: 30px auto;padding: 0 20px;">
     <div style="background-color: #222222;padding: 40px;border-radius: 15px;">
         <h1 style="color: limegreen;margin-top: 0;">Nowa rezerwacja</h1>
@@ -18,7 +19,6 @@
             </table>
         </div>
 
-        <!-- DODAJ TEN BLOK - INFO O ZAJĘTYCH DNIACH -->
         {% if zajete_dni %}
         <div style="background-color: #ff6666;padding: 15px;border-radius: 10px;margin-bottom: 20px;color: white;">
             <strong>⚠️ Samochód jest już zarezerwowany na następujące terminy:</strong><br>
@@ -27,7 +27,6 @@
             {% endfor %}
         </div>
         {% endif %}
-        <!-- KONIEC DODAWANIA -->
 
         <form method="POST">
             {% csrf_token %}
@@ -50,6 +49,16 @@
             <div style="margin-bottom: 30px;">
                 <label style="color: white;display: block;margin-bottom: 5px;"><strong>Miejsce zwrotu</strong></label>
                 {{ form.miejsce_zwrotu }}
+            </div>
+
+            <div id="price-info" style="display:none;background-color:#444;padding:20px;border-radius:10px;margin-bottom:20px;border-left:5px solid limegreen;">
+                <div style="color:white;font-size:14px;margin-bottom:10px;">
+                    Liczba dni: <strong id="dni">0</strong> | Cena za dobę: <strong>{{ samochod.cena_za_dobe }} zł</strong>
+                </div>
+                <hr style="border-color:#555;margin:10px 0;">
+                <div style="text-align:center;font-size:24px;color:limegreen;font-weight:bold;">
+                    RAZEM: <strong id="razem">0 zł</strong>
+                </div>
             </div>
 
             <div style="display: grid;grid-template-columns: 1fr 1fr;gap: 10px;">
@@ -77,8 +86,42 @@ button:hover, a:hover {
 a {
     display: inline-block;
 }
-html {
-    min-height: 100%;
-}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cena = parseFloat('{{ samochod.cena_za_dobe }}');
+    const odInput = document.querySelector('input[name="data_odbioru"]');
+    const zwrotInput = document.querySelector('input[name="data_zwrotu"]');
+    const priceInfo = document.getElementById('price-info');
+    const dniSpan = document.getElementById('dni');
+    const razemSpan = document.getElementById('razem');
+
+    function oblicz() {
+        if (!odInput.value || !zwrotInput.value) {
+            priceInfo.style.display = 'none';
+            return;
+        }
+
+        const od = new Date(odInput.value);
+        const zwrot = new Date(zwrotInput.value);
+
+        if (zwrot <= od) {
+            priceInfo.style.display = 'none';
+            return;
+        }
+
+        const dni = Math.ceil((zwrot - od) / (1000 * 60 * 60 * 24));
+        const razem = dni * cena;
+
+        dniSpan.textContent = dni;
+        razemSpan.textContent = razem.toFixed(2) + ' zł';
+        priceInfo.style.display = 'block';
+    }
+
+    odInput.addEventListener('input', oblicz);
+    zwrotInput.addEventListener('input', oblicz);
+});
+</script>
+
 {% endblock %}

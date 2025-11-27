@@ -25,10 +25,16 @@
                     {% for rezerwacja in rezerwacje %}
                     <tr style="border-bottom: 1px solid #444;">
                         <td style="color: white;padding: 15px;">{{ rezerwacja.kod_rezerwacji }}</td>
-                        <td style="color: white;padding: 15px;">{{ rezerwacja.klient.username }} ({{ rezerwacja.imie_klienta }} {{ rezerwacja.nazwisko_klienta }})</td>
+                        <td style="color: white;padding: 15px;">{{ rezerwacja.imie_klienta }} {{ rezerwacja.nazwisko_klienta }} ({{ rezerwacja.klient.username }})</td>
                         <td style="color: white;padding: 15px;">{{ rezerwacja.samochod.nazwa }}</td>
-                        <td style="color: white;padding: 15px;">{{ rezerwacja.data_odbioru|date:"d.m.Y H:i" }}</td>
-                        <td style="color: white;padding: 15px;">{{ rezerwacja.data_zwrotu|date:"d.m.Y H:i" }}</td>
+                        <td style="color: white;padding: 15px;">
+                            <div style="font-weight: bold;margin-bottom: 5px;">{{ rezerwacja.miejsce_odbioru }}</div>
+                            <div style="color: #ccc;font-size: 12px;">{{ rezerwacja.data_odbioru|date:"d.m.Y H:i" }}</div>
+                        </td>
+                        <td style="color: white;padding: 15px;">
+                            <div style="font-weight: bold;margin-bottom: 5px;">{{ rezerwacja.miejsce_zwrotu }}</div>
+                            <div style="color: #ccc;font-size: 12px;">{{ rezerwacja.data_zwrotu|date:"d.m.Y H:i" }}</div>
+                        </td>
                         <td style="color: white;padding: 15px;">
                             {% if rezerwacja.status == 'oczekujacy' %}
                                 <span style="background-color: #ff9900;padding: 5px 10px;border-radius: 3px;">Oczekujący</span>
@@ -43,10 +49,10 @@
                         <td style="color: limegreen;padding: 15px;font-weight: bold;">{{ rezerwacja.kwota_razem }} zł</td>
                         <td style="color: white;padding: 15px;text-align: center;">
                             {% if rezerwacja.status == 'oczekujacy' %}
-                                <a href="{% url 'potwierdz_rezerwacje' rezerwacja.id %}" style="color: #66ff66;text-decoration: none;font-weight: bold;margin-right: 10px;" title="Potwierdź rezerwację">✓ Potwierdź</a>
+                                <a href="{% url 'potwierdz_rezerwacje' rezerwacja.id %}" style="color: #66ff66;text-decoration: none;font-weight: bold;margin-right: 10px;" title="Potwierdź rezerwację">Potwierdź</a>
                             {% endif %}
                             {% if rezerwacja.status in 'oczekujacy,potwierdzony' %}
-                                <a href="{% url 'anuluj_rezerwacje' rezerwacja.id %}" style="color: #ff6666;text-decoration: none;font-weight: bold;" onclick="return confirm('Anulować tę rezerwację?');">✕ Anuluj</a>
+                                <a href="{% url 'anuluj_rezerwacje' rezerwacja.id %}" style="color: #ff6666;text-decoration: none;font-weight: bold;" onclick="return confirm('Anulować tę rezerwację?');">Anuluj</a>
                             {% endif %}
                         </td>
                     </tr>
