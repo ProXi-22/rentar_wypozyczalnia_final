@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Zarządzanie samochodami - Rentar{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1 class="tytul" style="margin: 0;">Zarządzanie samochodami</h1>
+        <a href="{% url 'dodaj_samochod' %}" class="oferta">
+            <span class="oferta_link">+ Dodaj samochód</span>
+        </a>
+    </div>
+    
+    {% if samochody %}
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; background-color: #222222; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #333;">
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Kod</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Nazwa</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Rocznik</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Moc (KM)</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">V-max</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Cena/dobę</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Status</th>
+                        <th style="color: limegreen; padding: 15px; text-align: center; border-bottom: 2px solid #555;">Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for samochod in samochody %}
+                    <tr style="border-bottom: 1px solid #444;">
+                        <td style="color: white; padding: 15px;">{{ samochod.kod_samochodu }}</td>
+                        <td style="color: white; padding: 15px;">{{ samochod.nazwa }}</td>
+                        <td style="color: white; padding: 15px;">{{ samochod.rocznik }}</td>
+                        <td style="color: white; padding: 15px;">{{ samochod.moc }}</td>
+                        <td style="color: white; padding: 15px;">{{ samochod.predkosc_maksymalna }} km/h</td>
+                        <td style="color: limegreen; padding: 15px; font-weight: bold;">{{ samochod.cena_za_dobe }} zł</td>
+                        <td style="color: white; padding: 15px;">
+                            {% if samochod.status == 'dostepny' %}
+                                <span style="background-color: #00cc00; padding: 5px 10px; border-radius: 3px;">Dostępny</span>
+                            {% else %}
+                                <span style="background-color: #cc0000; padding: 5px 10px; border-radius: 3px;">Niedostępny</span>
+                            {% endif %}
+                        </td>
+                        <td style="color: white; padding: 15px; text-align: center;">
+                            <a href="{% url 'edytuj_samochod' samochod.id %}" 
+                               style="color: #66ccff; text-decoration: none; font-weight: bold; margin-right: 10px;">
+                                Edytuj
+                            </a>
+                            {% if not samochod.ma_aktywna_rezerwacje %}
+                                <a href="{% url 'usun_samochod' samochod.id %}" 
+                                   style="color: #ff6666; text-decoration: none; font-weight: bold;"
+                                   onclick="return confirm('Na pewno chcesz usunąć ten samochód?');">
+                                    Usuń
+                                </a>
+                            {% else %}
+                                <span style="color: #888;">Usuń (zajęty)</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; background-color: #222222; border-radius: 10px;">
+            <p style="color: white; font-size: 18px;">Brak samochodów w bazie.</p>
+            <a href="{% url 'dodaj_samochod' %}" class="oferta" style="margin-top: 20px; display: inline-block;">
+                <span class="oferta_link">Dodaj pierwszy samochód</span>
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    table {
+        margin-bottom: 30px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    @media (max-width: 768px) {
+        table {
+            font-size: 12px;
+        }
+        
+        th, td {
+            padding: 10px !important;
+        }
+    }
+
+    html {
+    height: 100%;
+    }
+</style>
+{% endblock %}

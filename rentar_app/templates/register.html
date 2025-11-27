@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Rejestracja - Rentar{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto; background-color: #222222; padding: 40px; border-radius: 15px;">
+    <h1 style="color: limegreen; text-align: center; margin-bottom: 30px;">Utwórz konto</h1>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_username" style="color: white; display: block; margin-bottom: 5px;">Nazwa użytkownika</label>
+            {{ form.username }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_email" style="color: white; display: block; margin-bottom: 5px;">Email</label>
+            {{ form.email }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_first_name" style="color: white; display: block; margin-bottom: 5px;">Imię (opcjonalnie)</label>
+            {{ form.first_name }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_last_name" style="color: white; display: block; margin-bottom: 5px;">Nazwisko (opcjonalnie)</label>
+            {{ form.last_name }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_password1" style="color: white; display: block; margin-bottom: 5px;">Hasło</label>
+            {{ form.password1 }}
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+            <label for="id_password2" style="color: white; display: block; margin-bottom: 5px;">Powtórz hasło</label>
+            {{ form.password2 }}
+        </div>
+        
+        <button type="submit" style="width: 100%; padding: 12px; background-color: grey; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: 0.3s;">
+            Utwórz konto
+        </button>
+    </form>
+    
+    <p style="color: white; text-align: center; margin-top: 20px;">
+        Masz już konto? <a href="{% url 'login' %}" style="color: limegreen;">Zaloguj się</a>
+    </p>
+</div>
+
+<style>
+    input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #333;
+        color: white;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+        outline: none;
+        border: 2px solid #b300ff;
+    }
+    
+    button:hover {
+        transform: scale(1.02);
+        transition: 0.3s;
+    }
+
+      html {
+    height: 100%;
+    }
+</style>
+{% endblock %}

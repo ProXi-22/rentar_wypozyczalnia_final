@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Rentar - Wynajem samochodów sportowych{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <ul class="nazwa_firmy">
+                <li><a href="{% url 'index' %}" class="logo"><img src="{% static 'images/logo.png' %}" alt="Rentar Logo"></a></li>
+            </ul>
+
+            <ul class="nav1">
+                <li><a href="{% url 'index' %}">Strona główna</a></li>
+                <li><a href="{% url 'cars_list' %}">Oferta samochodów</a></li>
+                {% if user.is_authenticated %}
+                    {% if user.uzytkownik.rola == 'klient' %}
+                        <li><a href="{% url 'moje_rezerwacje' %}">Moje rezerwacje</a></li>
+                    {% elif user.uzytkownik.rola == 'pracownik' %}
+                        <li><a href="{% url 'panel_pracownika' %}">Panel pracownika</a></li>
+                        <li><a href="{% url 'zarzadzanie_samochodami' %}">Zarządzanie samochodami</a></li>
+                    {% elif user.uzytkownik.rola == 'admin' %}
+                        <li><a href="{% url 'panel_pracownika' %}">Panel pracownika</a></li>
+                        <li><a href="{% url 'zarzadzanie_samochodami' %}">Zarządzanie samochodami</a></li>
+                        <li><a href="{% url 'zarzadzanie_uzytkownikami' %}">Zarządzanie użytkownikami</a></li>
+                        <li><a href="{% url 'raporty' %}">Raporty</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+
+            <ul class="nav2">
+                {% if user.is_authenticated %}
+                    <li><a href="#">{{ user.username }}</a></li>
+                    <li><a href="{% url 'logout' %}">Wyloguj się</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Logowanie</a></li>
+                    <li><a href="{% url 'register' %}">Rejestracja</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div style="max-width: 1200px;margin: 20px auto;padding: 0 20px;">
+        {% for message in messages %}
+        <div style="padding: 15px;margin-bottom: 10px;border-radius: 5px;text-align: center;
+            {% if message.tags == 'error' %}background: #ff4444;color: white;
+            {% elif message.tags == 'success' %}background: #44ff44;color: black;
+            {% else %}background: #4444ff;color: white;
+            {% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

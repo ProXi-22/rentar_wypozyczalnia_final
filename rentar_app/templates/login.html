@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Logowanie - Rentar{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto; background-color: #222222; padding: 40px; border-radius: 15px;">
+    <h1 style="color: limegreen; text-align: center; margin-bottom: 30px;">Zaloguj się</h1>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_username" style="color: white; display: block; margin-bottom: 5px;">Nazwa użytkownika</label>
+            {{ form.username }}
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+            <label for="id_password" style="color: white; display: block; margin-bottom: 5px;">Hasło</label>
+            {{ form.password }}
+        </div>
+        
+        <button type="submit" style="width: 100%; padding: 12px; background-color: grey; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: 0.3s;">
+            Zaloguj się
+        </button>
+    </form>
+    
+    <p style="color: white; text-align: center; margin-top: 20px;">
+        Nie masz konta? <a href="{% url 'register' %}" style="color: limegreen;">Zarejestruj się</a>
+    </p>
+
+</div>
+
+<style>
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #333;
+        color: white;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    
+    input[type="text"]:focus, input[type="password"]:focus {
+        outline: none;
+        border: 2px solid #b300ff;
+    }
+    
+    button:hover {
+        transform: scale(1.02);
+        transition: 0.3s;
+    }
+    
+    a {
+        color: limegreen;
+        text-decoration: none;
+    }
+    
+    a:hover {
+        color: #00ff00;
+    }
+
+      html {
+    height: 100%;
+    }
+</style>
+{% endblock %}

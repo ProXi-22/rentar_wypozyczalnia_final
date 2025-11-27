@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - Rentar{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 30px auto; padding: 0 20px;">
+    <div style="background-color: #222222; padding: 40px; border-radius: 15px;">
+        <h1 style="color: limegreen; margin-top: 0;">{{ title }}</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 20px;">
+                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Username</strong></label>
+                {% if uzytkownik_profil %}
+                    <input type="text" value="{{ form.instance.username }}" disabled style="width: 100%; padding: 10px; background-color: #444; color: #aaa; border: 1px solid #555; border-radius: 5px;">
+                {% else %}
+                    {{ form.username }}
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Email</strong></label>
+                {{ form.email }}
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Imię</strong></label>
+                {{ form.first_name }}
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Nazwisko</strong></label>
+                {{ form.last_name }}
+            </div>
+
+            {% if not uzytkownik_profil %}
+                <div style="margin-bottom: 20px;">
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Hasło</strong></label>
+                    {{ form.password1 }}
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Powtórz hasło</strong></label>
+                    {{ form.password2 }}
+                </div>
+            {% endif %}
+
+            <div style="margin-bottom: 30px;">
+                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Rola</strong></label>
+                <select name="rola" style="width: 100%; padding: 10px; border: 1px solid #555; border-radius: 5px; background-color: #333; color: white;">
+                    <option value="pracownik" {% if uzytkownik_profil.rola == 'pracownik' %}selected{% endif %}>Pracownik</option>
+                    <option value="admin" {% if uzytkownik_profil.rola == 'admin' %}selected{% endif %}>Administrator</option>
+                </select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button type="submit" style="padding: 12px; background-color: grey; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold;">
+                    Zapisz
+                </button>
+                <a href="{% url 'zarzadzanie_uzytkownikami' %}" style="padding: 12px; background-color: #555; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; text-decoration: none; text-align: center; font-weight: bold;">
+                    Anuluj
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    input[type="text"], input[type="email"], input[type="password"], select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #333;
+        color: white;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, select:focus {
+        outline: none;
+        border: 2px solid #b300ff;
+    }
+
+    button:hover, a:hover {
+        transform: scale(1.02);
+        transition: 0.3s;
+    }
+
+    a {
+        display: inline-block;
+    }
+</style>
+{% endblock %}

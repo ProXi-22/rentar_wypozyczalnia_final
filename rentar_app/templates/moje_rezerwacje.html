@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Moje rezerwacje - Rentar{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+    <h1 class="tytul">Moje rezerwacje</h1>
+    
+    {% if rezerwacje %}
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; background-color: #222222; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #333;">
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Kod rezerwacji</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Samochód</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Data odbioru</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Data zwrotu</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Status</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Kwota</th>
+                        <th style="color: limegreen; padding: 15px; text-align: center; border-bottom: 2px solid #555;">Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rezerwacja in rezerwacje %}
+                    <tr style="border-bottom: 1px solid #444;">
+                        <td style="color: white; padding: 15px;">{{ rezerwacja.kod_rezerwacji }}</td>
+                        <td style="color: white; padding: 15px;">{{ rezerwacja.samochod.nazwa }}</td>
+                        <td style="color: white; padding: 15px;">{{ rezerwacja.data_odbioru|date:"d.m.Y H:i" }}</td>
+                        <td style="color: white; padding: 15px;">{{ rezerwacja.data_zwrotu|date:"d.m.Y H:i" }}</td>
+                        <td style="color: white; padding: 15px;">
+                            {% if rezerwacja.status == 'oczekujacy' %}
+                                <span style="background-color: #ff9900; padding: 5px 10px; border-radius: 3px;">Oczekujący</span>
+                            {% elif rezerwacja.status == 'potwierdzony' %}
+                                <span style="background-color: #00cc00; padding: 5px 10px; border-radius: 3px;">Potwierdzony</span>
+                            {% elif rezerwacja.status == 'zakonczony' %}
+                                <span style="background-color: #0099ff; padding: 5px 10px; border-radius: 3px;">Zakończony</span>
+                            {% elif rezerwacja.status == 'anulowany' %}
+                                <span style="background-color: #cc0000; padding: 5px 10px; border-radius: 3px;">Anulowany</span>
+                            {% endif %}
+                        </td>
+                        <td style="color: limegreen; padding: 15px; font-weight: bold;">{{ rezerwacja.kwota_razem }} zł</td>
+                        <td style="color: white; padding: 15px; text-align: center;">
+                            {% if rezerwacja.status in 'oczekujacy,potwierdzony' %}
+                                <a href="{% url 'anuluj_rezerwacje' rezerwacja.id %}" 
+                                   style="color: #ff6666; text-decoration: none; font-weight: bold;"
+                                   onclick="return confirm('Na pewno chcesz anulować tę rezerwację?');">
+                                    Anuluj
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; background-color: #222222; border-radius: 10px;">
+            <p style="color: white; font-size: 18px;">Nie masz żadnych rezerwacji.</p>
+            <a href="{% url 'cars_list' %}" class="oferta" style="margin-top: 20px; display: inline-block;">
+                <span class="oferta_link">Przejdź do oferty</span>
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    table {
+        margin-bottom: 30px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    @media (max-width: 768px) {
+        table {
+            font-size: 12px;
+        }
+        
+        th, td {
+            padding: 10px !important;
+        }
+    }
+</style>
+{% endblock %}

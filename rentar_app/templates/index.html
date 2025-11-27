@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rentar - Strona główna{% endblock %}
+
+{% block content %}
+<section1>
+    <div class="srodek">
+        <div class="div-h1">
+            <p class="tytuly">{{ liczba_samochodow }}</p>
+            <p class="opisy">Samochodów w ofercie</p>
+        </div>
+    </div>
+    <div class="srodek">
+        <div class="div-h1">
+            <p class="tytuly">{{ liczba_rezerwacji }}</p>
+            <p class="opisy">Zrealizowanych zamówień</p>
+        </div>
+    </div>
+    <div class="srodek">
+        <div class="div-h1">
+            <p class="tytuly">24/7</p>
+            <p class="opisy">Obsługa klienta</p>
+        </div>
+    </div>
+</section1>
+
+<h2 class="tytul" style="margin-top: 40px;">Polecane samochody</h2>
+
+<section1>
+    {% for samochod in samochody %}
+    <div class="srodek">
+        {% if samochod.zdjecie %}
+            <img class="section1-img" src="{{ samochod.zdjecie.url }}" alt="{{ samochod.nazwa }}" style="width: 100%; border-radius: 10px; object-fit: cover; height: 200px;">
+        {% else %}
+            <img class="section1-img" src="https://via.placeholder.com/300x200?text={{ samochod.nazwa|urlencode }}" alt="{{ samochod.nazwa }}" style="width: 100%; border-radius: 10px;">
+        {% endif %}
+        <div class="div-h1">
+            <p class="tytuly" style="font-size: 25px;">{{ samochod.nazwa }}</p>
+            <p class="opisy">{{ samochod.rocznik }} • {{ samochod.moc }} KM</p>
+            <p class="table_big" style="margin: 10px 0;">{{ samochod.cena_za_dobe }} zł/dobę</p>
+            <a href="{% url 'rezerwacja_samochodu' samochod.id %}" class="oferta" style="margin-top: 10px;">
+                <span class="oferta_link">Rezerwuj</span>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</section1>
+
+{% endblock %}

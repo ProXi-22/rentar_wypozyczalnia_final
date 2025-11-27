@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Zarządzanie użytkownikami - Rentar{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1 class="tytul" style="margin: 0;">Zarządzanie użytkownikami</h1>
+        <a href="{% url 'dodaj_pracownika' %}" class="oferta">
+            <span class="oferta_link">+ Dodaj pracownika</span>
+        </a>
+    </div>
+    
+    {% if pracownicy %}
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; background-color: #222222; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #333;">
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Kod użytkownika</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Username</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Imię i nazwisko</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Email</th>
+                        <th style="color: limegreen; padding: 15px; text-align: left; border-bottom: 2px solid #555;">Rola</th>
+                        <th style="color: limegreen; padding: 15px; text-align: center; border-bottom: 2px solid #555;">Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pracownik in pracownicy %}
+                    <tr style="border-bottom: 1px solid #444;">
+                        <td style="color: white; padding: 15px;">{{ pracownik.uzytkownik.kod_uzytkownika }}</td>
+                        <td style="color: white; padding: 15px;">{{ pracownik.username }}</td>
+                        <td style="color: white; padding: 15px;">{{ pracownik.first_name }} {{ pracownik.last_name }}</td>
+                        <td style="color: white; padding: 15px;">{{ pracownik.email }}</td>
+                        <td style="color: white; padding: 15px;">
+                            {% if pracownik.uzytkownik.rola == 'admin' %}
+                                <span style="background-color: #b300ff; padding: 5px 10px; border-radius: 3px;">Administrator</span>
+                            {% elif pracownik.uzytkownik.rola == 'pracownik' %}
+                                <span style="background-color: #0099ff; padding: 5px 10px; border-radius: 3px;">Pracownik</span>
+                            {% endif %}
+                        </td>
+                        <td style="color: white; padding: 15px; text-align: center;">
+                            <a href="{% url 'edytuj_pracownika' pracownik.uzytkownik.id %}" 
+                               style="color: #66ccff; text-decoration: none; font-weight: bold; margin-right: 10px;">
+                                Edytuj
+                            </a>
+                            <a href="{% url 'usun_pracownika' pracownik.uzytkownik.id %}" 
+                               style="color: #ff6666; text-decoration: none; font-weight: bold;"
+                               onclick="return confirm('Na pewno chcesz usunąć tego pracownika?');">
+                                Usuń
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; background-color: #222222; border-radius: 10px;">
+            <p style="color: white; font-size: 18px;">Brak pracowników w bazie.</p>
+            <a href="{% url 'dodaj_pracownika' %}" class="oferta" style="margin-top: 20px; display: inline-block;">
+                <span class="oferta_link">Dodaj pierwszego pracownika</span>
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    table {
+        margin-bottom: 30px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    @media (max-width: 768px) {
+        table {
+            font-size: 12px;
+        }
+        
+        th, td {
+            padding: 10px !important;
+        }
+    }
+
+    html {
+    height: 100%;
+    }
+</style>
+{% endblock %}

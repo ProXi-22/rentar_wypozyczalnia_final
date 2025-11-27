@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - Rentar{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 30px auto; padding: 0 20px;">
+    <div style="background-color: #222222; padding: 40px; border-radius: 15px;">
+        <h1 style="color: limegreen; margin-top: 0;">{{ title }}</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 20px;">
+                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Nazwa samochodu</strong></label>
+                {{ form.nazwa }}
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Rocznik</strong></label>
+                    {{ form.rocznik }}
+                </div>
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Pojemność silnika</strong></label>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        {{ form.pojemnosc_silnika }}
+                        <span style="color: white; font-weight: bold; white-space: nowrap;">L</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Moc (KM)</strong></label>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        {{ form.moc }}
+                        <span style="color: white; font-weight: bold; white-space: nowrap;">KM</span>
+                    </div>
+                </div>
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>0-100 km/h</strong></label>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        {{ form.przyspieszenie }}
+                        <span style="color: white; font-weight: bold; white-space: nowrap;">s</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Prędkość maksymalna</strong></label>
+                    {{ form.predkosc_maksymalna }}
+                </div>
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Liczba miejsc</strong></label>
+                    {{ form.liczba_miejsc }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Skrzynia biegów</strong></label>
+                    {{ form.skrzynia_biegow }}
+                </div>
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Napęd</strong></label>
+                    {{ form.naped }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Cena za dobę (zł)</strong></label>
+                    {{ form.cena_za_dobe }}
+                </div>
+                <div>
+                    <label style="color: white; display: block; margin-bottom: 5px;"><strong>Status</strong></label>
+                    {{ form.status }}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Zdjęcie (opcjonalnie)</strong></label>
+                {{ form.zdjecie }}
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button type="submit" style="padding: 12px; background-color: grey; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold;">
+                    Zapisz
+                </button>
+                <a href="{% url 'zarzadzanie_samochodami' %}" style="padding: 12px; background-color: #555; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; text-decoration: none; text-align: center; font-weight: bold;">
+                    Anuluj
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    input[type="text"], input[type="number"], select, input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #333;
+        color: white;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, select:focus {
+        outline: none;
+        border: 2px solid #b300ff;
+    }
+
+    button:hover, a:hover {
+        transform: scale(1.02);
+        transition: 0.3s;
+    }
+
+    a {
+        display: inline-block;
+    }
+</style>
+{% endblock %}
