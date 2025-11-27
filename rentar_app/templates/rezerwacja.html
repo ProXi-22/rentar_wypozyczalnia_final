@@ -3,64 +3,49 @@
 {% block title %}Rezerwacja - Rentar{% endblock %}
 
 {% block content %}
-<div style="max-width: 800px; margin: 30px auto; padding: 0 20px;">
-    <div style="background-color: #222222; padding: 40px; border-radius: 15px;">
-        <h1 style="color: limegreen; margin-top: 0;">Nowa rezerwacja</h1>
-        
-        <div style="background-color: #333; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
-            <h2 style="color: white; margin-top: 0;">{{ samochod.nazwa }}</h2>
-            <table style="width: 100%; color: white; font-size: 14px;">
-                <tr>
-                    <td><strong>Rocznik:</strong></td>
-                    <td>{{ samochod.rocznik }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Moc:</strong></td>
-                    <td>{{ samochod.moc }} KM</td>
-                </tr>
-                <tr>
-                    <td><strong>0-100 km/h:</strong></td>
-                    <td>{{ samochod.przyspieszenie }}</td>
-                </tr>
-                <tr>
-                    <td><strong>V-max:</strong></td>
-                    <td>{{ samochod.predkosc_maksymalna }} km/h</td>
-                </tr>
-                <tr>
-                    <td><strong>Cena za dobę:</strong></td>
-                    <td style="color: limegreen; font-weight: bold;">{{ samochod.cena_za_dobe }} zł</td>
-                </tr>
+<div style="max-width: 800px;margin: 30px auto;padding: 0 20px;">
+    <div style="background-color: #222222;padding: 40px;border-radius: 15px;">
+        <h1 style="color: limegreen;margin-top: 0;">Nowa rezerwacja</h1>
+
+        <div style="background-color: #333;padding: 20px;border-radius: 10px;margin-bottom: 30px;">
+            <h2 style="color: white;margin-top: 0;">{{ samochod.nazwa }}</h2>
+            <table style="width: 100%;color: white;font-size: 14px;">
+                <tr><td><strong>Rocznik:</strong></td><td>{{ samochod.rocznik }}</td></tr>
+                <tr><td><strong>Moc:</strong></td><td>{{ samochod.moc }} KM</td></tr>
+                <tr><td><strong>0-100 km/h:</strong></td><td>{{ samochod.przyspieszenie }}</td></tr>
+                <tr><td><strong>V-max:</strong></td><td>{{ samochod.predkosc_maksymalna }} km/h</td></tr>
+                <tr><td><strong>Cena za dobę:</strong></td><td style="color: limegreen;font-weight: bold;">{{ samochod.cena_za_dobe }} zł</td></tr>
             </table>
         </div>
-        
+
         <form method="POST">
             {% csrf_token %}
-            
+
             <div style="margin-bottom: 20px;">
-                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Data odbioru</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Data odbioru</strong></label>
                 {{ form.data_odbioru }}
             </div>
-            
+
             <div style="margin-bottom: 20px;">
-                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Data zwrotu</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Data zwrotu</strong></label>
                 {{ form.data_zwrotu }}
             </div>
-            
+
             <div style="margin-bottom: 20px;">
-                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Miejsce odbioru</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Miejsce odbioru</strong></label>
                 {{ form.miejsce_odbioru }}
             </div>
-            
+
             <div style="margin-bottom: 30px;">
-                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Miejsce zwrotu</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Miejsce zwrotu</strong></label>
                 {{ form.miejsce_zwrotu }}
             </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <button type="submit" style="padding: 12px; background-color: grey; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold;">
+
+            <div style="display: grid;grid-template-columns: 1fr 1fr;gap: 10px;">
+                <button type="submit" style="padding: 12px;background-color: grey;color: white;border: none;border-radius: 5px;font-size: 16px;cursor: pointer;font-weight: bold;">
                     Zarezerwuj samochód
                 </button>
-                <a href="{% url 'cars_list' %}" style="padding: 12px; background-color: #555; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; text-decoration: none; text-align: center; font-weight: bold;">
+                <a href="{% url 'cars_list' %}" style="padding: 12px;background-color: #555;color: white;border: none;border-radius: 5px;font-size: 16px;cursor: pointer;text-decoration: none;text-align: center;font-weight: bold;">
                     Anuluj
                 </a>
             </div>
@@ -69,29 +54,17 @@
 </div>
 
 <style>
-    input[type="datetime-local"], input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #555;
-        border-radius: 5px;
-        background-color: #333;
-        color: white;
-        font-size: 14px;
-        box-sizing: border-box;
-    }
-    
-    input[type="datetime-local"]:focus, input[type="text"]:focus {
-        outline: none;
-        border: 2px solid #b300ff;
-    }
-    
-    button:hover, a:hover {
-        transform: scale(1.02);
-        transition: 0.3s;
-    }
-    
-    a {
-        display: inline-block;
-    }
+input[type="datetime-local"], input[type="text"] {
+    width: 100%;padding: 10px;border: 1px solid #555;border-radius: 5px;background-color: #333;color: white;font-size: 14px;box-sizing: border-box;
+}
+input[type="datetime-local"]:focus, input[type="text"]:focus {
+    outline: none;border: 2px solid #b300ff;
+}
+button:hover, a:hover {
+    transform: scale(1.02);transition: 0.3s;
+}
+a {
+    display: inline-block;
+}
 </style>
 {% endblock %}

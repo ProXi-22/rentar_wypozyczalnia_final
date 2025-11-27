@@ -4,38 +4,38 @@
 {% block title %}Oferta samochodów - Rentar{% endblock %}
 
 {% block content %}
-<div style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+<div style="max-width: 1200px;margin: 30px auto;padding: 0 20px;">
     <h1 class="tytul">Oferta samochodów</h1>
 
-    <div style="background-color: #222222; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
-        <h2 style="color: limegreen; margin-top: 0;">Filtrowanie i sortowanie</h2>
-        <form method="GET" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+    <div style="background-color: #222222;padding: 20px;border-radius: 10px;margin-bottom: 30px;">
+        <h2 style="color: limegreen;margin-top: 0;">Filtrowanie i sortowanie</h2>
+        <form method="GET" style="display: grid;grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));gap: 15px;">
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;">Nazwa</label>
+                <label style="color: white;display: block;margin-bottom: 5px;">Nazwa</label>
                 {{ form.nazwa }}
             </div>
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;">Cena od</label>
+                <label style="color: white;display: block;margin-bottom: 5px;">Cena od</label>
                 {{ form.cena_od }}
             </div>
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;">Cena do</label>
+                <label style="color: white;display: block;margin-bottom: 5px;">Cena do</label>
                 {{ form.cena_do }}
             </div>
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;">Moc od</label>
+                <label style="color: white;display: block;margin-bottom: 5px;">Moc od</label>
                 {{ form.moc_od }}
             </div>
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;">Moc do</label>
+                <label style="color: white;display: block;margin-bottom: 5px;">Moc do</label>
                 {{ form.moc_do }}
             </div>
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;">Sortuj</label>
+                <label style="color: white;display: block;margin-bottom: 5px;">Sortuj</label>
                 {{ form.sortowanie }}
             </div>
-            <div style="display: flex; align-items: flex-end;">
-                <button type="submit" style="width: 100%; padding: 10px; background-color: grey; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            <div style="display: flex;align-items: flex-end;">
+                <button type="submit" style="width: 100%;padding: 10px;background-color: grey;color: white;border: none;border-radius: 5px;cursor: pointer;">
                     Filtruj
                 </button>
             </div>
@@ -47,86 +47,49 @@
             {% for samochod in samochody %}
             <div class="srodek">
                 {% if samochod.zdjecie %}
-                    <img class="section1-img" src="{{ samochod.zdjecie.url }}" alt="{{ samochod.nazwa }}" style="width: 100%; border-radius: 10px; object-fit: cover; height: 200px;">
+                    <img class="section1-img" src="{{ samochod.zdjecie.url }}" alt="{{ samochod.nazwa }}" style="width: 100%;border-radius: 10px;object-fit: cover;height: 200px;">
                 {% else %}
-                    <img class="section1-img" src="https://via.placeholder.com/300x200?text={{ samochod.nazwa|urlencode }}" alt="{{ samochod.nazwa }}" style="width: 100%; border-radius: 10px;">
+                    <img class="section1-img" src="https://via.placeholder.com/300x200?text={{ samochod.nazwa|urlencode }}" alt="{{ samochod.nazwa }}" style="width: 100%;border-radius: 10px;">
                 {% endif %}
                 <div class="div-h1">
                     <p class="tytuly" style="font-size: 22px;">{{ samochod.nazwa }}</p>
-                    <table style="width: 100%; color: white; font-size: 12px;">
-                        <tr>
-                            <td>Rocznik:</td>
-                            <td style="text-align: right;"><strong>{{ samochod.rocznik }}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Moc:</td>
-                            <td style="text-align: right;"><strong>{{ samochod.moc }} KM</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Silnik:</td>
-                            <td style="text-align: right;"><strong>{{ samochod.pojemnosc_silnika }} L</strong></td>
-                        </tr>
-                        <tr>
-                            <td>0-100 km/h:</td>
-                            <td style="text-align: right;"><strong>{{ samochod.przyspieszenie }} s</strong></td>
-                        </tr>
-                        <tr>
-                            <td>V-max:</td>
-                            <td style="text-align: right;"><strong>{{ samochod.predkosc_maksymalna }} km/h</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Skrzynia:</td>
-                            <td style="text-align: right;"><strong>{{ samochod.get_skrzynia_biegow_display }}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Napęd:</td>
-                            <td style="text-align: right;"><strong>{{ samochod.get_naped_display }}</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Miejsca:</td>
-                            <td style="text-align: right;"><strong>{{ samochod.liczba_miejsc }}</strong></td>
-                        </tr>
+                    <table style="width: 100%;color: white;font-size: 12px;">
+                        <tr><td>Rocznik:</td><td style="text-align: right;"><strong>{{ samochod.rocznik }}</strong></td></tr>
+                        <tr><td>Moc:</td><td style="text-align: right;"><strong>{{ samochod.moc }} KM</strong></td></tr>
+                        <tr><td>Silnik:</td><td style="text-align: right;"><strong>{{ samochod.pojemnosc_silnika }} L</strong></td></tr>
+                        <tr><td>0-100 km/h:</td><td style="text-align: right;"><strong>{{ samochod.przyspieszenie }} s</strong></td></tr>
+                        <tr><td>V-max:</td><td style="text-align: right;"><strong>{{ samochod.predkosc_maksymalna }} km/h</strong></td></tr>
+                        <tr><td>Skrzynia:</td><td style="text-align: right;"><strong>{{ samochod.get_skrzynia_biegow_display }}</strong></td></tr>
+                        <tr><td>Napęd:</td><td style="text-align: right;"><strong>{{ samochod.get_naped_display }}</strong></td></tr>
+                        <tr><td>Miejsca:</td><td style="text-align: right;"><strong>{{ samochod.liczba_miejsc }}</strong></td></tr>
                     </table>
                     <p class="table_big" style="margin: 15px 0;">{{ samochod.cena_za_dobe }} zł/dobę</p>
                     {% if user.is_authenticated %}
                         {% if user.uzytkownik.rola == 'klient' %}
-                            <a href="{% url 'rezerwacja_samochodu' samochod.id %}" class="oferta" style="margin-top: 10px;">
-                                <span class="oferta_link">Rezerwuj</span>
-                            </a>
+                            <a href="{% url 'rezerwacja_samochodu' samochod.id %}" class="oferta" style="margin-top: 10px;"><span class="oferta_link">Rezerwuj</span></a>
                         {% else %}
-                            <p style="color: #aaa; text-align: center;">Rezerwacje dla klientów</p>
+                            <p style="color: #aaa;text-align: center;">Rezerwacje dla klientów</p>
                         {% endif %}
                     {% else %}
-                        <a href="{% url 'login' %}" class="oferta" style="margin-top: 10px;">
-                            <span class="oferta_link">Zaloguj się by rezerwować</span>
-                        </a>
+                        <a href="{% url 'login' %}" class="oferta" style="margin-top: 10px;"><span class="oferta_link">Zaloguj się by rezerwować</span></a>
                     {% endif %}
                 </div>
             </div>
             {% endfor %}
         </section1>
     {% else %}
-        <div style="text-align: center; padding: 40px; background-color: #222222; border-radius: 10px;">
-            <p style="color: white; font-size: 18px;">Brak samochodów spełniających kryteria.</p>
+        <div style="text-align: center;padding: 40px;background-color: #222222;border-radius: 10px;">
+            <p style="color: white;font-size: 18px;">Brak samochodów spełniających kryteria.</p>
         </div>
     {% endif %}
 </div>
 
 <style>
-    input[type="text"], input[type="number"], select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #555;
-        border-radius: 5px;
-        background-color: #333;
-        color: white;
-        font-size: 13px;
-        box-sizing: border-box;
-    }
-
-    input[type="text"]:focus, input[type="number"]:focus, select:focus {
-        outline: none;
-        border: 2px solid #b300ff;
-    }
+input[type="text"], input[type="number"], select {
+    width: 100%;padding: 8px;border: 1px solid #555;border-radius: 5px;background-color: #333;color: white;font-size: 13px;box-sizing: border-box;
+}
+input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    outline: none;border: 2px solid #b300ff;
+}
 </style>
 {% endblock %}

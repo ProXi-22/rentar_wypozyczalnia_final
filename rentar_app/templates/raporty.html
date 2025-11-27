@@ -3,90 +3,89 @@
 {% block title %}Raporty - Rentar{% endblock %}
 
 {% block content %}
-<div style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+<div style="max-width: 1200px;margin: 30px auto;padding: 0 20px;">
     <h1 class="tytul">Generowanie raportów</h1>
-    
-    <div style="background-color: #222222; padding: 30px; border-radius: 10px; margin-bottom: 30px;">
-        <h2 style="color: limegreen; margin-top: 0;">Parametry raportu</h2>
-        
-        <form method="GET" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: flex-end;">
+
+    <div style="background-color: #222222;padding: 30px;border-radius: 10px;margin-bottom: 30px;">
+        <h2 style="color: limegreen;margin-top: 0;">Parametry raportu</h2>
+
+        <form method="GET" style="display: grid;grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));gap: 15px;align-items: flex-end;">
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Typ raportu</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Typ raportu</strong></label>
                 {{ form.typ_raportu }}
             </div>
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Okres</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Okres</strong></label>
                 {{ form.okres }}
             </div>
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Od dnia</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Od dnia</strong></label>
                 {{ form.data_od }}
             </div>
             <div>
-                <label style="color: white; display: block; margin-bottom: 5px;"><strong>Do dnia</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Do dnia</strong></label>
                 {{ form.data_do }}
             </div>
             <div>
-                <button type="submit" style="width: 100%; padding: 10px; background-color: grey; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                <button type="submit" style="width: 100%;padding: 10px;background-color: grey;color: white;border: none;border-radius: 5px;cursor: pointer;font-weight: bold;">
                     Generuj raport
                 </button>
             </div>
         </form>
     </div>
-    
+
     {% if raport_data %}
-        <div style="background-color: #222222; padding: 30px; border-radius: 10px;">
-            <h2 style="color: limegreen; margin-top: 0;">Raport: {{ raport_data.typ }}</h2>
+        <div style="background-color: #222222;padding: 30px;border-radius: 10px;">
+            <h2 style="color: limegreen;margin-top: 0;">Raport: {{ raport_data.typ }}</h2>
             <p style="color: #aaa;">Okres: {{ raport_data.okres }}</p>
-            
+
             {% if raport_data.typ == 'Zyski' %}
-                <div style="padding: 20px; background-color: #333; border-radius: 10px; text-align: center; margin-bottom: 20px;">
-                    <p style="color: white; font-size: 14px; margin: 0;">Całkowite zyski</p>
-                    <p class="table_big" style="margin: 10px 0; font-size: 36px;">{{ raport_data.wartosc }} zł</p>
+                <div style="padding: 20px;background-color: #333;border-radius: 10px;text-align: center;margin-bottom: 20px;">
+                    <p style="color: white;font-size: 14px;margin: 0;">Całkowite zyski</p>
+                    <p class="table_big" style="margin: 10px 0;font-size: 36px;">{{ raport_data.wartosc }} zł</p>
                     <p style="color: #aaa;">Liczba rezerwacji: {{ raport_data.liczba_rezerwacji }}</p>
                 </div>
-            
+
             {% elif raport_data.typ == 'Najpopularniejsze samochody' %}
                 <div style="overflow-x: auto;">
-                    <table style="width: 100%; background-color: #333; border-collapse: collapse;">
+                    <table style="width: 100%;background-color: #333;border-collapse: collapse;">
                         <thead>
                             <tr style="background-color: #1a1a1a;">
-                                <th style="color: limegreen; padding: 15px; text-align: left;">Samochód</th>
-                                <th style="color: limegreen; padding: 15px; text-align: right;">Rezerwacji</th>
-                                <th style="color: limegreen; padding: 15px; text-align: right;">Przychód</th>
+                                <th style="color: limegreen;padding: 15px;text-align: left;">Samochód</th>
+                                <th style="color: limegreen;padding: 15px;text-align: right;">Rezerwacji</th>
+                                <th style="color: limegreen;padding: 15px;text-align: right;">Przychód</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in raport_data.dane %}
                             <tr style="border-bottom: 1px solid #555;">
-                                <td style="color: white; padding: 15px;">{{ item.samochod__nazwa }}</td>
-                                <td style="color: white; padding: 15px; text-align: right;">{{ item.liczba }}</td>
-                                <td style="color: limegreen; padding: 15px; text-align: right; font-weight: bold;">{{ item.przychod }} zł</td>
+                                <td style="color: white;padding: 15px;">{{ item.samochod__nazwa }}</td>
+                                <td style="color: white;padding: 15px;text-align: right;">{{ item.liczba }}</td>
+                                <td style="color: limegreen;padding: 15px;text-align: right;font-weight: bold;">{{ item.przychod }} zł</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            
+
             {% elif raport_data.typ == 'Raport pracowników' %}
                 <div style="overflow-x: auto;">
-                    <table style="width: 100%; background-color: #333; border-collapse: collapse;">
+                    <table style="width: 100%;background-color: #333;border-collapse: collapse;">
                         <thead>
                             <tr style="background-color: #1a1a1a;">
-                                <th style="color: limegreen; padding: 15px; text-align: left;">Pracownik</th>
-                                <th style="color: limegreen; padding: 15px; text-align: right;">Potwierdził rezerwacji</th>
-                                <th style="color: limegreen; padding: 15px; text-align: right;">Przychód</th>
+                                <th style="color: limegreen;padding: 15px;text-align: left;">Pracownik</th>
+                                <th style="color: limegreen;padding: 15px;text-align: right;">Potwierdził rezerwacji</th>
+                                <th style="color: limegreen;padding: 15px;text-align: right;">Przychód</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in raport_data.dane %}
                             <tr style="border-bottom: 1px solid #555;">
-                                <td style="color: white; padding: 15px;">
-                                    {{ item.pracownik_potwierdzajacy__first_name }} {{ item.pracownik_potwierdzajacy__first_name }}
-                                    ({{ item.pracownik_potwierdzajacy__username }})
+                                <td style="color: white;padding: 15px;">
+                                    {{ item.pracownik_potwierdzajacy__first_name }} {{ item.pracownik_potwierdzajacy__first_name }} ({{ item.pracownik_potwierdzajacy__username }})
                                 </td>
-                                <td style="color: white; padding: 15px; text-align: right;">{{ item.liczba_rezerwacji }}</td>
-                                <td style="color: limegreen; padding: 15px; text-align: right; font-weight: bold;">{{ item.przychod }} zł</td>
+                                <td style="color: white;padding: 15px;text-align: right;">{{ item.liczba_rezerwacji }}</td>
+                                <td style="color: limegreen;padding: 15px;text-align: right;font-weight: bold;">{{ item.przychod }} zł</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -95,37 +94,21 @@
             {% endif %}
         </div>
     {% else %}
-        <div style="text-align: center; padding: 40px; background-color: #222222; border-radius: 10px;">
-            <p style="color: white; font-size: 18px;">Wybierz parametry i kliknij "Generuj raport"</p>
+        <div style="text-align: center;padding: 40px;background-color: #222222;border-radius: 10px;">
+            <p style="color: white;font-size: 18px;">Wybierz parametry i kliknij "Generuj raport"</p>
         </div>
     {% endif %}
 </div>
 
 <style>
-    input[type="date"], select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #555;
-        border-radius: 5px;
-        background-color: #333;
-        color: white;
-        font-size: 13px;
-        box-sizing: border-box;
-    }
-    
-    input[type="date"]:focus, select:focus {
-        outline: none;
-        border: 2px solid #b300ff;
-    }
-    
-    table {
-        margin-bottom: 30px;
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    html {
-    height: 100%;
-    }
+input[type="date"], select {
+    width: 100%;padding: 8px;border: 1px solid #555;border-radius: 5px;background-color: #333;color: white;font-size: 13px;box-sizing: border-box;
+}
+input[type="date"]:focus, select:focus {
+    outline: none;border: 2px solid #b300ff;
+}
+table {
+    margin-bottom: 30px;border-radius: 10px;overflow: hidden;
+}
 </style>
 {% endblock %}

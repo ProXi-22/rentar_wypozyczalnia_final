@@ -33,18 +33,10 @@ class DodajSamochodForm(forms.ModelForm):
         widgets = {
             'nazwa': forms.TextInput(attrs={'class': 'form-control'}),
             'rocznik': forms.NumberInput(attrs={'class': 'form-control'}),
-            'pojemnosc_silnika': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'np. 3.0'}),
-            'moc': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'min': 0}),
-            'przyspieszenie': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'np. 3.5'}),
-            'predkosc_maksymalna': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'min': 0}),
+            'pojemnosc_silnika': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'np. 3.0'}),
+            'moc': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
+            'przyspieszenie': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'np. 3.5'}),
+            'predkosc_maksymalna': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
             'skrzynia_biegow': forms.Select(attrs={'class': 'form-control'}),
             'liczba_miejsc': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
             'naped': forms.Select(attrs={'class': 'form-control'}),
@@ -52,7 +44,6 @@ class DodajSamochodForm(forms.ModelForm):
             'status': forms.Select(attrs={'class': 'form-control'}),
             'zdjecie': forms.FileInput(attrs={'class': 'form-control'}),
         }
-
 
     def clean(self):
         cleaned_data = super().clean()
@@ -78,18 +69,9 @@ class RezerwacjaForm(forms.ModelForm):
         model = Rezerwacja
         fields = ['data_odbioru', 'data_zwrotu', 'miejsce_odbioru', 'miejsce_zwrotu']
         widgets = {
-            'data_odbioru': forms.DateTimeInput(attrs={
-                'class': 'form-control',
-                'type': 'datetime-local',
-                'min': timezone.now().isoformat()
-            }),
-            'data_zwrotu': forms.DateTimeInput(attrs={
-                'class': 'form-control',
-                'type': 'datetime-local',
-                'min': timezone.now().isoformat()
-            }),
-            'miejsce_odbioru': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'np. Warszawa, ul. Marszałkowska 1'}),
+            'data_odbioru': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', 'min': timezone.now().isoformat()}),
+            'data_zwrotu': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', 'min': timezone.now().isoformat()}),
+            'miejsce_odbioru': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'np. Warszawa, ul. Marszałkowska 1'}),
             'miejsce_zwrotu': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'np. Kraków, Centrum'}),
         }
 
@@ -103,7 +85,6 @@ class RezerwacjaForm(forms.ModelForm):
                 raise forms.ValidationError("Data zwrotu musi być po dacie odbioru")
             if data_odbioru < timezone.now():
                 raise forms.ValidationError("Data odbioru nie może być z przeszłości")
-
         return cleaned_data
 
 
@@ -144,7 +125,6 @@ class DodajPracownikaForm(forms.ModelForm):
                 raise forms.ValidationError("Hasła się nie zgadzają")
             if len(password1) < 6:
                 raise forms.ValidationError("Hasło musi mieć co najmniej 6 znaków")
-
         return cleaned_data
 
 
@@ -175,4 +155,3 @@ class RaportForm(forms.Form):
     okres = forms.ChoiceField(choices=OKRES_CHOICES)
     data_od = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     data_do = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-
