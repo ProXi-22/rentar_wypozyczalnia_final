@@ -69,8 +69,16 @@ class RezerwacjaForm(forms.ModelForm):
         model = Rezerwacja
         fields = ['data_odbioru', 'data_zwrotu', 'miejsce_odbioru', 'miejsce_zwrotu']
         widgets = {
-            'data_odbioru': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', 'min': timezone.now().isoformat()}),
-            'data_zwrotu': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', 'min': timezone.now().isoformat()}),
+            'data_odbioru': forms.DateTimeInput(attrs={
+                'class': 'form-control',
+                'type': 'datetime-local',
+                'min': timezone.now().isoformat()
+            }),
+            'data_zwrotu': forms.DateTimeInput(attrs={
+                'class': 'form-control',
+                'type': 'datetime-local',
+                'min': timezone.now().isoformat()
+            }),
             'miejsce_odbioru': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'np. Warszawa, ul. Marszałkowska 1'}),
             'miejsce_zwrotu': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'np. Kraków, Centrum'}),
         }
@@ -85,6 +93,7 @@ class RezerwacjaForm(forms.ModelForm):
                 raise forms.ValidationError("Data zwrotu musi być po dacie odbioru")
             if data_odbioru < timezone.now():
                 raise forms.ValidationError("Data odbioru nie może być z przeszłości")
+
         return cleaned_data
 
 

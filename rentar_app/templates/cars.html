@@ -53,7 +53,7 @@
                 {% endif %}
                 <div class="div-h1">
                     <p class="tytuly" style="font-size: 22px;">{{ samochod.nazwa }}</p>
-                    <table style="width: 100%;color: white;font-size: 12px;">
+                    <table style="width: 100%;color: white;font-size: 15px;">
                         <tr><td>Rocznik:</td><td style="text-align: right;"><strong>{{ samochod.rocznik }}</strong></td></tr>
                         <tr><td>Moc:</td><td style="text-align: right;"><strong>{{ samochod.moc }} KM</strong></td></tr>
                         <tr><td>Silnik:</td><td style="text-align: right;"><strong>{{ samochod.pojemnosc_silnika }} L</strong></td></tr>
@@ -63,7 +63,7 @@
                         <tr><td>Napęd:</td><td style="text-align: right;"><strong>{{ samochod.get_naped_display }}</strong></td></tr>
                         <tr><td>Miejsca:</td><td style="text-align: right;"><strong>{{ samochod.liczba_miejsc }}</strong></td></tr>
                     </table>
-                    <p class="table_big" style="margin: 15px 0;">{{ samochod.cena_za_dobe }} zł/dobę</p>
+                    <p class="table_big" style="margin: 15px 0;">{{ samochod.cena_za_dobe }} zł/doba</p>
                     {% if user.is_authenticated %}
                         {% if user.uzytkownik.rola == 'klient' %}
                             <a href="{% url 'rezerwacja_samochodu' samochod.id %}" class="oferta" style="margin-top: 10px;"><span class="oferta_link">Rezerwuj</span></a>

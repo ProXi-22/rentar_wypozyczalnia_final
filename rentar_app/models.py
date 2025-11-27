@@ -91,6 +91,8 @@ class Rezerwacja(models.Model):
     ]
 
     klient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rezerwacje_klient')
+    imie_klienta = models.CharField(max_length=100, blank=True)
+    nazwisko_klienta = models.CharField(max_length=100, blank=True)
     samochod = models.ForeignKey(Samochod, on_delete=models.CASCADE, related_name='rezerwacje')
     data_odbioru = models.DateTimeField()
     data_zwrotu = models.DateTimeField()
@@ -113,6 +115,10 @@ class Rezerwacja(models.Model):
 
         if self.data_zwrotu <= self.data_odbioru:
             raise ValueError("Data zwrotu musi być po dacie odbioru")
+
+        if not self.imie_klienta or not self.nazwisko_klienta:
+            self.imie_klienta = self.klient.first_name
+            self.nazwisko_klienta = self.klient.last_name
 
         dni = (self.data_zwrotu - self.data_odbioru).days
         if dni == 0:

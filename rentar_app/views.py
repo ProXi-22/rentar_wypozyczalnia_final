@@ -80,33 +80,56 @@ def cars_list(request):
     return render(request,'cars.html',context)
 
 @login_required(login_url='login')
-def rezerwacja_samochodu(request,samochod_id):
-    samochod=get_object_or_404(Samochod,id=samochod_id)
+def rezerwacja_samochodu(request, samochod_id):
+    samochod = get_object_or_404(Samochod, id=samochod_id)
+
     try:
-        uzytkownik=Uzytkownik.objects.get(user=request.user)
-        if uzytkownik.rola!='klient':
-            messages.error(request,'Tylko klienci mogą rezerwować samochody.')
+        uzytkownik = Uzytkownik.objects.get(user=request.user)
+        if uzytkownik.rola != 'klient':
+            messages.error(request, 'Tylko klienci mogą rezerwować samochody.')
             return redirect('cars_list')
     except Uzytkownik.DoesNotExist:
-        messages.error(request,'Błąd: profil użytkownika nie istnieje.')
+        messages.error(request, 'Błąd: profil użytkownika nie istnieje.')
         return redirect('cars_list')
-    if request.method=='POST':
-        form=RezerwacjaForm(request.POST)
+
+    if request.method == 'POST':
+        form = RezerwacjaForm(request.POST)
         if form.is_valid():
-            rezerwacja=form.save(commit=False)
-            rezerwacja.klient=request.user
-            rezerwacja.samochod=samochod
+            rezerwacja = form.save(commit=False)
+            rezerwacja.klient = request.user
+            rezerwacja.samochod = samochod
+
             try:
                 rezerwacja.save()
-                messages.success(request,'Rezerwacja złożona. Oczekuje na potwierdzenie pracownika.')
+                messages.success(request, 'Rezerwacja złożona. Oczekuje na potwierdzenie pracownika.')
                 return redirect('moje_rezerwacje')
-            except ValueError as e:messages.error(request,str(e))
+            except ValueError as e:
+                messages.error(request, str(e))
         else:
-            for field,errors in form.errors.items():
-                for error in errors:messages.error(request,str(error))
-    else:form=RezerwacjaForm()
-    context={'form':form,'samochod':samochod}
-    return render(request,'rezerwacja.html',context)
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, str(error))
+    else:
+        form = RezerwacjaForm()
+        form._samochod = samochod
+
+        rezerwacje_zajete = Rezerwacja.objects.filter(
+            samochod=samochod,
+            status__in=['oczekujacy', 'potwierdzony']
+        ).order_by('data_odbioru')
+
+        zajete_dni = []
+        for rez in rezerwacje_zajete:
+            zajete_dni.append(
+                f"Od {rez.data_odbioru.strftime('%d/%m/%Y %H:%M')} do {rez.data_zwrotu.strftime('%d/%m/%Y %H:%M')}")
+
+    context = {
+        'form': form,
+        'samochod': samochod,
+        'zajete_dni': zajete_dni,
+    }
+    return render(request, 'rezerwacja.html', context)
+
 
 @login_required(login_url='login')
 def moje_rezerwacje(request):

@@ -12,7 +12,7 @@
                 <thead>
                     <tr style="background-color: #333;">
                         <th style="color: limegreen;padding: 15px;text-align: left;border-bottom: 2px solid #555;">Kod</th>
-                        <th style="color: limegreen;padding: 15px;text-align: left;border-bottom: 2px solid #555;">Klient</th>
+                        <th style="color: limegreen;padding: 15px;text-align: left;border-bottom: 2px solid #555;">Klient (Imię i nazwisko)</th>
                         <th style="color: limegreen;padding: 15px;text-align: left;border-bottom: 2px solid #555;">Samochód</th>
                         <th style="color: limegreen;padding: 15px;text-align: left;border-bottom: 2px solid #555;">Odbiór</th>
                         <th style="color: limegreen;padding: 15px;text-align: left;border-bottom: 2px solid #555;">Zwrot</th>
@@ -25,7 +25,7 @@
                     {% for rezerwacja in rezerwacje %}
                     <tr style="border-bottom: 1px solid #444;">
                         <td style="color: white;padding: 15px;">{{ rezerwacja.kod_rezerwacji }}</td>
-                        <td style="color: white;padding: 15px;">{{ rezerwacja.klient.username }}</td>
+                        <td style="color: white;padding: 15px;">{{ rezerwacja.klient.username }} ({{ rezerwacja.imie_klienta }} {{ rezerwacja.nazwisko_klienta }})</td>
                         <td style="color: white;padding: 15px;">{{ rezerwacja.samochod.nazwa }}</td>
                         <td style="color: white;padding: 15px;">{{ rezerwacja.data_odbioru|date:"d.m.Y H:i" }}</td>
                         <td style="color: white;padding: 15px;">{{ rezerwacja.data_zwrotu|date:"d.m.Y H:i" }}</td>

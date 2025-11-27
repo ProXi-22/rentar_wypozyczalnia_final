@@ -18,16 +18,27 @@
             </table>
         </div>
 
+        <!-- DODAJ TEN BLOK - INFO O ZAJĘTYCH DNIACH -->
+        {% if zajete_dni %}
+        <div style="background-color: #ff6666;padding: 15px;border-radius: 10px;margin-bottom: 20px;color: white;">
+            <strong>⚠️ Samochód jest już zarezerwowany na następujące terminy:</strong><br>
+            {% for termin in zajete_dni %}
+                {{ termin }}<br>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- KONIEC DODAWANIA -->
+
         <form method="POST">
             {% csrf_token %}
 
             <div style="margin-bottom: 20px;">
-                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Data odbioru</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Data odbioru (DD/MM/YYYY HH:MM)</strong></label>
                 {{ form.data_odbioru }}
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Data zwrotu</strong></label>
+                <label style="color: white;display: block;margin-bottom: 5px;"><strong>Data zwrotu (DD/MM/YYYY HH:MM)</strong></label>
                 {{ form.data_zwrotu }}
             </div>
 
