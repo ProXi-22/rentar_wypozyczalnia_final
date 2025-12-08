@@ -99,8 +99,7 @@ class Rezerwacja(models.Model):
     miejsce_odbioru = models.CharField(max_length=200)
     miejsce_zwrotu = models.CharField(max_length=200)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='oczekujacy')
-    pracownik_potwierdzajacy = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
-                                                 related_name='rezerwacje_potwierdzone')
+    pracownik_potwierdzajacy = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='rezerwacje_potwierdzone')
     data_utworzenia = models.DateTimeField(auto_now_add=True)
     data_modyfikacji = models.DateTimeField(auto_now=True)
     kod_rezerwacji = models.CharField(max_length=50, unique=True, editable=False)
@@ -137,3 +136,9 @@ class Rezerwacja(models.Model):
 
     def __str__(self):
         return f"Rezerwacja {self.kod_rezerwacji} - {self.samochod.nazwa}"
+
+
+
+
+
+
