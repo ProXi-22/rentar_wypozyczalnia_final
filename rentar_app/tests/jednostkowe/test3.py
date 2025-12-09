@@ -1,4 +1,3 @@
-import unittest
 from django.test import TestCase
 from django.contrib.auth.models import User
 from rentar_app.models import Uzytkownik
@@ -24,7 +23,6 @@ class TestUzytkownikModel(TestCase):
 
     def test_02_uzytkownik_auto_kod(self):
         self.assertEqual(self.uzytkownik.kod_uzytkownika, 'U00001')
-
         user2 = User.objects.create_user(username='user2', password='pass')
         uzytkownik2 = Uzytkownik.objects.create(user=user2, rola='pracownik')
         self.assertEqual(uzytkownik2.kod_uzytkownika, 'U00002')
