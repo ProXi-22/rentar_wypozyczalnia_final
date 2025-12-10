@@ -92,13 +92,24 @@ def rezerwacja_samochodu(request, samochod_id):
         messages.error(request, 'Błąd: profil użytkownika nie istnieje.')
         return redirect('cars_list')
 
+    rezerwacje_zajete = Rezerwacja.objects.filter(
+        samochod=samochod,
+        status__in=['oczekujacy', 'potwierdzony']
+    ).order_by('data_odbioru')
+
+    zajete_dni = []
+    for rez in rezerwacje_zajete:
+        zajete_dni.append(
+            f"Od {rez.data_odbioru.strftime('%d/%m/%Y %H:%M')} "
+            f"do {rez.data_zwrotu.strftime('%d/%m/%Y %H:%M')}"
+        )
+
     if request.method == 'POST':
         form = RezerwacjaForm(request.POST)
         if form.is_valid():
             rezerwacja = form.save(commit=False)
             rezerwacja.klient = request.user
             rezerwacja.samochod = samochod
-
             try:
                 rezerwacja.save()
                 messages.success(request, 'Rezerwacja złożona. Oczekuje na potwierdzenie pracownika.')
@@ -111,23 +122,14 @@ def rezerwacja_samochodu(request, samochod_id):
                     messages.error(request, str(error))
     else:
         form = RezerwacjaForm()
-        form._samochod = samochod
-
-        rezerwacje_zajete = Rezerwacja.objects.filter(
-            samochod=samochod,
-            status__in=['oczekujacy', 'potwierdzony']
-        ).order_by('data_odbioru')
-
-        zajete_dni = []
-        for rez in rezerwacje_zajete:
-            zajete_dni.append(
-                f"Od {rez.data_odbioru.strftime('%d/%m/%Y %H:%M')} do {rez.data_zwrotu.strftime('%d/%m/%Y %H:%M')}")
+        form.samochod = samochod
 
     context = {
         'form': form,
         'samochod': samochod,
         'zajete_dni': zajete_dni,
     }
+
     return render(request, 'rezerwacja.html', context)
 
 

@@ -37,8 +37,8 @@
         {% endif %}
         <div class="div-h1">
             <p class="tytuly" style="font-size: 25px;">{{ samochod.nazwa }}</p>
-            <p class="opisy">{{ samochod.rocznik }} • {{ samochod.moc }} KM</p>
-            <p class="table_big" style="margin: 10px 0;">{{ samochod.cena_za_dobe }} zł/dobę</p>
+            <p class="opisy">{{ samochod.rocznik }} - {{ samochod.moc }} KM</p>
+            <p class="table_big" style="margin: 10px 0;">{{ samochod.cena_za_dobe }} zł/doba</p>
             <a href="{% url 'rezerwacja_samochodu' samochod.id %}" class="oferta" style="margin-top: 10px;"><span class="oferta_link">Rezerwuj</span></a>
         </div>
     </div>
