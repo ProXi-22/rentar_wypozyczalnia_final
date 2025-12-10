@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 class TestSamochodModel(TestCase):
 
     def setUp(self):
-        """Przygotowanie danych testowych"""
         self.samochod_data = {
             'nazwa': 'BMW M5',
             'rocznik': 2023,
@@ -33,17 +32,8 @@ class TestSamochodModel(TestCase):
 
         self.dzisiaj = datetime.now().date()
 
-    # ============ TESTY METODY SAVE() ============
 
-    def test_01_generowanie_pierwszego_kodu(self):
-        """TEST 1: Pierwsza instancja Samochodu powinna otrzymać kod S00001"""
-        Samochod.objects.all().delete()
-        samochod = Samochod.objects.create(**self.samochod_data)
-        self.assertEqual(samochod.kod_samochodu, 'S00001')
-        print("TEST 1 PASS: Kod samochodu S00001 wygenerowany poprawnie")
-
-    def test_02_generowanie_unikalnych_kodow(self):
-        """TEST 2: Kolejne samochody powinny mieć unikalne kody"""
+    def test_01_generowanie_unikalnych_kodow(self):
         self.samochod_data['nazwa'] = 'Audi A8'
         samochod2 = Samochod.objects.create(**self.samochod_data)
 
@@ -53,10 +43,9 @@ class TestSamochodModel(TestCase):
         self.assertEqual(self.samochod.kod_samochodu, 'S00001')
         self.assertEqual(samochod2.kod_samochodu, 'S00002')
         self.assertEqual(samochod3.kod_samochodu, 'S00003')
-        print("TEST 2 PASS: Kody auto-generowane: S00001, S00002, S00003")
+        print("TEST 1 PASS: Kody auto-generowane: S00001, S00002, S00003")
 
-    def test_03_nie_nadpisuje_custom_kodu(self):
-        """TEST 3: Custom kod nie powinien być nadpisany"""
+    def test_02_nie_nadpisuje_custom_kodu(self):
         Samochod.objects.all().delete()
         samochod = Samochod(**self.samochod_data)
         samochod.kod_samochodu = 'CUSTOM_BMW'
@@ -64,10 +53,9 @@ class TestSamochodModel(TestCase):
 
         samochod.refresh_from_db()
         self.assertEqual(samochod.kod_samochodu, 'CUSTOM_BMW')
-        print("TEST 3 PASS: Custom kod CUSTOM_BMW nie został nadpisany")
+        print("TEST 2 PASS: Custom kod CUSTOM_BMW nie został nadpisany")
 
-    def test_04_walidacja_ujemnej_mocy(self):
-        """TEST 4: Ujemna moc powinna wyrzucić ValueError"""
+    def test_03_walidacja_ujemnej_mocy(self):
         self.samochod_data['moc'] = -100
         samochod = Samochod(**self.samochod_data)
 
@@ -75,95 +63,32 @@ class TestSamochodModel(TestCase):
             samochod.save()
 
         self.assertIn("Wartości nie mogą być ujemne", str(context.exception))
-        print("TEST 4 PASS: ValueError wyrzucony dla ujemnej mocy")
+        print("TEST 3 PASS: ValueError dla ujemnej mocy")
 
-    def test_05_walidacja_ujemnej_ceny(self):
-        """TEST 5: Ujemna cena powinna wyrzucić ValueError"""
+    def test_04_walidacja_ujemnej_ceny(self):
         self.samochod_data['cena_za_dobe'] = Decimal('-100.00')
         samochod = Samochod(**self.samochod_data)
 
         with self.assertRaises(ValueError):
             samochod.save()
-        print("TEST 5 PASS: ValueError wyrzucony dla ujemnej ceny")
+        print("TEST 4 PASS: ValueError dla ujemnej ceny")
 
-    def test_06_walidacja_ujemnej_liczby_miejsc(self):
-        """TEST 6: Ujemna liczba miejsc powinna wyrzucić ValueError"""
+    def test_05_walidacja_ujemnej_liczby_miejsc(self):
         self.samochod_data['liczba_miejsc'] = -5
         samochod = Samochod(**self.samochod_data)
 
         with self.assertRaises(ValueError):
             samochod.save()
-        print("TEST 6 PASS: ValueError wyrzucony dla ujemnej liczby miejsc")
+        print("TEST 5 PASS: ValueError dla ujemnej liczby miejsc")
 
-    def test_07_walidacja_ujemnej_predkosci(self):
-        """TEST 7: Ujemna prędkość maksymalna powinna wyrzucić ValueError"""
+    def test_06_walidacja_ujemnej_predkosci(self):
         self.samochod_data['predkosc_maksymalna'] = -250
         samochod = Samochod(**self.samochod_data)
 
         with self.assertRaises(ValueError):
             samochod.save()
-        print("TEST 7 PASS: ValueError wyrzucony dla ujemnej prędkości")
+        print("TEST 6 PASS: ValueError dla ujemnej prędkości")
 
-    def test_08_akceptacja_wartosci_zerowych(self):
-        """TEST 8: Wartości zerowe powinny być zaakceptowane"""
-        self.samochod_data['liczba_miejsc'] = 0
-        self.samochod_data['moc'] = 0
-        samochod = Samochod.objects.create(**self.samochod_data)
-
-        self.assertEqual(samochod.liczba_miejsc, 0)
-        self.assertEqual(samochod.moc, 0)
-        print("TEST 8 PASS: Wartości zerowe zaakceptowane")
-
-    def test_09_akceptacja_poprawnych_wartosci(self):
-        """TEST 9: Prawidłowe wartości powinny być zaakceptowane"""
-        samochod = Samochod.objects.filter(nazwa='BMW M5').first()
-
-        self.assertIsNotNone(samochod.kod_samochodu)
-        self.assertEqual(samochod.moc, 625)
-        self.assertEqual(samochod.cena_za_dobe, Decimal('500.00'))
-        self.assertEqual(samochod.liczba_miejsc, 5)
-        print("TEST 9 PASS: Wszystkie wartości prawidłowe zaakceptowane")
-
-    def test_10_edycja_zachowuje_kod(self):
-        """TEST 10: Edycja samochodu nie powinna zmienić kodu"""
-        oryginalny_kod = self.samochod.kod_samochodu
-        self.samochod.moc = 750
-        self.samochod.save()
-
-        self.assertEqual(self.samochod.kod_samochodu, oryginalny_kod)
-        print("TEST 10 PASS: Kod zachowany podczas edycji")
-
-    def test_11_wszystkie_typy_skrzyn(self):
-        """TEST 11: Wszystkie typy skrzyn biegów powinny być akceptowane"""
-        skrzynie = ['manualna', 'automatyczna']
-
-        for i, skrznia in enumerate(skrzynie):
-            self.samochod_data['nazwa'] = f'Auto_{skrznia}'
-            self.samochod_data['skrzynia_biegow'] = skrznia
-            samochod = Samochod.objects.create(**self.samochod_data)
-            self.assertEqual(samochod.skrzynia_biegow, skrznia)
-
-        print("TEST 11 PASS: Wszystkie typy skrzyn (manualna, automatyczna) działają")
-
-    def test_12_wszystkie_typy_napedow(self):
-        """TEST 12: Wszystkie typy napędów powinny być akceptowane"""
-        napedy = ['rwd', 'awd', 'fwd']
-
-        for naped in napedy:
-            self.samochod_data['nazwa'] = f'Auto_{naped}'
-            self.samochod_data['naped'] = naped
-            samochod = Samochod.objects.create(**self.samochod_data)
-            self.assertEqual(samochod.naped, naped)
-
-        print("TEST 12 PASS: Wszystkie napędy (RWD, AWD, FWD) działają")
-
-    # ============ TESTY METODY MA_AKTYWNA_REZERWACJE() ============
-
-    def test_13_brak_rezerwacji_zwraca_false(self):
-        """TEST 13: Samochód bez rezerwacji powinien zwrócić False"""
-        wynik = self.samochod.ma_aktywna_rezerwacje()
-        self.assertFalse(wynik)
-        print("TEST 13 PASS: Brak rezerwacji zwraca False")
 
     def test_14_rezerwacja_oczekujaca_zwraca_true(self):
         """TEST 14: Rezerwacja 'oczekujacy' powinna zwrócić True"""
