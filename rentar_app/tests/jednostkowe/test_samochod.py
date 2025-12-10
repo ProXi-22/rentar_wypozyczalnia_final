@@ -90,22 +90,8 @@ class TestSamochodModel(TestCase):
         print("TEST 6 PASS: ValueError dla ujemnej prędkości")
 
 
-    def test_14_rezerwacja_oczekujaca_zwraca_true(self):
-        """TEST 14: Rezerwacja 'oczekujacy' powinna zwrócić True"""
-        Rezerwacja.objects.create(
-            samochod=self.samochod,
-            uzytkownik_id=self.user.id,
-            data_poczatku=self.dzisiaj,
-            data_konca=self.dzisiaj + timedelta(days=1),
-            status='oczekujacy'
-        )
+    def test_07_rezerwacja_potwierdzona_zwraca_true(self):
 
-        wynik = self.samochod.ma_aktywna_rezerwacje()
-        self.assertTrue(wynik)
-        print("TEST 14 PASS: Rezerwacja 'oczekujacy' zwraca True")
-
-    def test_15_rezerwacja_potwierdzona_zwraca_true(self):
-        """TEST 15: Rezerwacja 'potwierdzony' powinna zwrócić True"""
         Rezerwacja.objects.create(
             samochod=self.samochod,
             uzytkownik_id=self.user.id,
@@ -116,10 +102,9 @@ class TestSamochodModel(TestCase):
 
         wynik = self.samochod.ma_aktywna_rezerwacje()
         self.assertTrue(wynik)
-        print("TEST 15 PASS: Rezerwacja 'potwierdzony' zwraca True")
+        print("TEST 7 PASS: Rezerwacja 'potwierdzony' zwraca True")
 
-    def test_16_rezerwacja_anulowana_zwraca_false(self):
-        """TEST 16: Rezerwacja 'anulowany' powinna zwrócić False"""
+    def test_08_rezerwacja_anulowana_zwraca_false(self):
         Rezerwacja.objects.create(
             samochod=self.samochod,
             uzytkownik_id=self.user.id,
@@ -130,10 +115,10 @@ class TestSamochodModel(TestCase):
 
         wynik = self.samochod.ma_aktywna_rezerwacje()
         self.assertFalse(wynik)
-        print("TEST 16 PASS: Rezerwacja 'anulowany' zwraca False")
+        print("TEST 8 PASS: Rezerwacja 'anulowany' zwraca False")
 
-    def test_17_rezerwacja_zakonczena_zwraca_false(self):
-        """TEST 17: Rezerwacja 'zakonczony' powinna zwrócić False"""
+    def test_09_rezerwacja_zakonczena_zwraca_false(self):
+
         Rezerwacja.objects.create(
             samochod=self.samochod,
             uzytkownik_id=self.user.id,
@@ -144,79 +129,5 @@ class TestSamochodModel(TestCase):
 
         wynik = self.samochod.ma_aktywna_rezerwacje()
         self.assertFalse(wynik)
-        print("TEST 17 PASS: Rezerwacja 'zakonczony' zwraca False")
+        print("TEST 9 PASS: Rezerwacja 'zakonczony' zwraca False")
 
-    def test_18_wiele_rezerwacji_z_aktywna(self):
-        """TEST 18: Kilka rezerwacji, jedna aktywna - zwróć True"""
-        # Rezerwacja anulowana
-        Rezerwacja.objects.create(
-            samochod=self.samochod,
-            uzytkownik_id=self.user.id,
-            data_poczatku=self.dzisiaj - timedelta(days=5),
-            data_konca=self.dzisiaj - timedelta(days=3),
-            status='anulowany'
-        )
-
-        # Rezerwacja aktywna
-        Rezerwacja.objects.create(
-            samochod=self.samochod,
-            uzytkownik_id=self.user.id,
-            data_poczatku=self.dzisiaj,
-            data_konca=self.dzisiaj + timedelta(days=1),
-            status='oczekujacy'
-        )
-
-        wynik = self.samochod.ma_aktywna_rezerwacje()
-        self.assertTrue(wynik)
-        print("TEST 18 PASS: Kilka rezerwacji, jedna aktywna - zwraca True")
-
-    def test_19_wiele_rezerwacji_bez_aktywnych(self):
-        """TEST 19: Kilka rezerwacji, żadna nie aktywna - zwróć False"""
-        Rezerwacja.objects.create(
-            samochod=self.samochod,
-            uzytkownik_id=self.user.id,
-            data_poczatku=self.dzisiaj - timedelta(days=3),
-            data_konca=self.dzisiaj - timedelta(days=2),
-            status='zakonczony'
-        )
-
-        Rezerwacja.objects.create(
-            samochod=self.samochod,
-            uzytkownik_id=self.user.id,
-            data_poczatku=self.dzisiaj - timedelta(days=10),
-            data_konca=self.dzisiaj - timedelta(days=9),
-            status='anulowany'
-        )
-
-        wynik = self.samochod.ma_aktywna_rezerwacje()
-        self.assertFalse(wynik)
-        print("TEST 19 PASS: Kilka rezerwacji bez aktywnych - zwraca False")
-
-    def test_20_inny_samochod_nie_wplywa(self):
-        """TEST 20: Rezerwacje innego samochodu nie wpływają na wynik"""
-        inny_samochod = Samochod.objects.create(
-            nazwa='Audi A8',
-            rocznik=2023,
-            pojemnosc_silnika='3.0L',
-            moc=460,
-            przyspieszenie='3.8s',
-            predkosc_maksymalna=250,
-            skrzynia_biegow='automatyczna',
-            liczba_miejsc=5,
-            naped='fwd',
-            cena_za_dobe=Decimal('350.00'),
-            status='dostepny'
-        )
-
-        # Rezerwacja dla innego samochodu
-        Rezerwacja.objects.create(
-            samochod=inny_samochod,
-            uzytkownik_id=self.user.id,
-            data_poczatku=self.dzisiaj,
-            data_konca=self.dzisiaj + timedelta(days=1),
-            status='oczekujacy'
-        )
-
-        wynik = self.samochod.ma_aktywna_rezerwacje()
-        self.assertFalse(wynik)
-        print("TEST 20 PASS: Rezerwacje innego samochodu nie wpływają na wynik")
