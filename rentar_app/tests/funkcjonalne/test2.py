@@ -9,7 +9,7 @@ from datetime import timedelta
 from django.utils import timezone
 import time
 
-class FunctionalTestRezerwacjaSelenium(StaticLiveServerTestCase): #TESTY FUNKCJONALNE: Rezerwacja oraz UI
+class FunctionalTestRezerwacjaSelenium(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -26,7 +26,6 @@ class FunctionalTestRezerwacjaSelenium(StaticLiveServerTestCase): #TESTY FUNKCJO
         super().tearDownClass()
 
     def setUp(self):
-        # Dane testowe
         self.klient = User.objects.create_user(
             username='klient_selenium',
             password='SelPass123!',
@@ -48,22 +47,17 @@ class FunctionalTestRezerwacjaSelenium(StaticLiveServerTestCase): #TESTY FUNKCJO
         )
 
     def test_functional_rezerwacja_full_flow(self):
-        """FUNKCJONALNY: Pełny flow rezerwacji w przeglądarce"""
-        
-        # KROK 1: Otwórz stronę główną
         self.selenium.get(f'{self.live_server_url}/')
         time.sleep(1)
         print("KROK 1: Otwarta strona główna")
-        
-        # KROK 2: Kliknij logowanie
+
         login_link = WebDriverWait(self.selenium, 10).until(
             EC.element_to_be_clickable((By.LINK_TEXT, 'Zaloguj się'))
         )
         login_link.click()
         time.sleep(1)
         print("KROK 2: Otwarta strona logowania")
-        
-        # KROK 3: Zaloguj się
+
         username = WebDriverWait(self.selenium, 10).until(
             EC.presence_of_element_located((By.NAME, 'username'))
         )
@@ -77,14 +71,12 @@ class FunctionalTestRezerwacjaSelenium(StaticLiveServerTestCase): #TESTY FUNKCJO
         )
         print("KROK 3: Zalogowany")
         time.sleep(1)
-        
-        # KROK 4: Przejdź do samochodów
+
         cars_link = self.selenium.find_element(By.LINK_TEXT, 'Samochody')
         cars_link.click()
         time.sleep(1)
         print("KROK 4: Otwarta lista samochodów")
-        
-        # KROK 5: Zarezerwuj samochód
+
         bmw_element = WebDriverWait(self.selenium, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[contains(text(), "BMW")]'))
         )
@@ -95,8 +87,7 @@ class FunctionalTestRezerwacjaSelenium(StaticLiveServerTestCase): #TESTY FUNKCJO
         reserve_btn.click()
         print("KROK 5b: Otwarta forma rezerwacji")
         time.sleep(1)
-        
-        # KROK 6: Wypełnij formę
+
         date_from = WebDriverWait(self.selenium, 10).until(
             EC.presence_of_element_located((By.NAME, 'data_odbioru'))
         )
@@ -107,15 +98,13 @@ class FunctionalTestRezerwacjaSelenium(StaticLiveServerTestCase): #TESTY FUNKCJO
         submit.click()
         print("KROK 6: Formularz wysłany")
         time.sleep(2)
-        
-        # KROK 7: Weryfikacja
+
         WebDriverWait(self.selenium, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[contains(text(), "BMW")]'))
         )
         print("KROK 7: Rezerwacja zapisana - widoczna na liście")
 
 class FunctionalTestLoginSelenium(StaticLiveServerTestCase):
-    """TESTY FUNKCJONALNE: Logowanie"""
 
     @classmethod
     def setUpClass(cls):
@@ -136,7 +125,6 @@ class FunctionalTestLoginSelenium(StaticLiveServerTestCase):
         Uzytkownik.objects.create(user=self.user, rola='klient')
 
     def test_functional_login_success(self):
-        """FUNKCJONALNY: Logowanie - poprawne dane"""
         self.selenium.get(f'{self.live_server_url}/login/')
         username = WebDriverWait(self.selenium, 10).until(
             EC.presence_of_element_located((By.NAME, 'username'))
@@ -152,7 +140,6 @@ class FunctionalTestLoginSelenium(StaticLiveServerTestCase):
         print("LOGIN: Zalogowanie pomyślne")
 
     def test_functional_login_failure(self):
-        """FUNKCJONALNY: Logowanie - błędne hasło"""
         self.selenium.get(f'{self.live_server_url}/login/')
         username = WebDriverWait(self.selenium, 10).until(
             EC.presence_of_element_located((By.NAME, 'username'))
@@ -169,7 +156,6 @@ class FunctionalTestLoginSelenium(StaticLiveServerTestCase):
         self.assertIsNotNone(error_msg)
         print("LOGIN: Wyświetlony błąd dla złych danych")
 
-# RUN ALL TESTS
 if __name__ == '__main__':
     import unittest
     unittest.main(verbosity=2)
